@@ -1,0 +1,79 @@
+1. Database Setup
+a) Create the student_database
+CREATE DATABASE student_database;
+
+b) Create the student_table
+CREATE TABLE student_table (
+    Student_id SERIAL PRIMARY KEY,
+    Stu_name TEXT NOT NULL,
+    Department TEXT,
+    email_id TEXT,
+    Phone_no NUMERIC,
+    Address TEXT,
+    Date_of_birth DATE,
+    Gender TEXT,
+    Major TEXT,
+    GPA NUMERIC,
+    Grade TEXT CHECK (Grade IN ('A', 'B', 'C', 'D', 'F'))
+);
+
+
+2. Data Entry
+Insert 10 Sample Records into student_table
+INSERT INTO student_table (Stu_name, Department, email_id, Phone_no, Address, Date_of_birth, Gender, Major, GPA, Grade)
+VALUES
+('John Doe', 'Computer Science', 'john.doe@example.com', 1234567890, '123 Main St', '2000-01-01', 'Male', 'Software Engineering', 3.8, 'B'),
+('Jane Smith', 'Physics', 'jane.smith@example.com', 2345678901, '456 Elm St', '1999-05-15', 'Female', 'Astrophysics', 4.2, 'A'),
+('Mike Johnson', 'Mathematics', 'mike.johnson@example.com', 3456789012, '789 Oak St', '1998-08-22', 'Male', 'Applied Math', 2.9, 'C'),
+('Emily Davis', 'Chemistry', 'emily.davis@example.com', 4567890123, '321 Maple St', '2001-02-10', 'Female', 'Organic Chemistry', 3.5, 'B'),
+('Robert Brown', 'Computer Science', 'robert.brown@example.com', 5678901234, '654 Pine St', '2000-07-17', 'Male', 'Artificial Intelligence', 4.0, 'A'),
+('Laura Wilson', 'Biology', 'laura.wilson@example.com', 6789012345, '987 Cedar St', '1999-11-11', 'Female', 'Genetics', 3.7, 'B'),
+('James Taylor', 'Engineering', 'james.taylor@example.com', 7890123456, '258 Spruce St', '1997-04-24', 'Male', 'Mechanical Engineering', 4.5, 'A'),
+('Sarah Lewis', 'Physics', 'sarah.lewis@example.com', 8901234567, '369 Birch St', '2000-09-30', 'Female', 'Quantum Mechanics', 2.5, 'D'),
+('David Martinez', 'History', 'david.martinez@example.com', 9012345678, '147 Willow St', '1998-12-15', 'Male', 'World History', 3.1, 'C'),
+('Sophia Anderson', 'Computer Science', 'sophia.anderson@example.com', 1234567890, '753 Fir St', '1999-06-20', 'Female', 'Cybersecurity', 4.8, 'A');
+
+3. Student Information Retrieval
+Retrieve All Students Sorted by Grade (Descending)
+SELECT * FROM student_table
+ORDER BY Grade DESC;
+
+4. Query for Male Students
+Retrieve Information About All Male Students
+SELECT * FROM student_table
+WHERE Gender = 'Male';
+
+5. Query for Students with GPA Less Than 5.0
+Fetch Details of Students with GPA Less Than 5.0
+SELECT * FROM student_table
+WHERE GPA < 5.0;
+
+6. Update Student Email and Grade
+Modify Email and Grade for a Student with a Specific ID
+UPDATE student_table
+SET email_id = 'new_email@example.com', Grade = 'A'
+WHERE Student_id = 1;  -- Replace 1 with the specific Student_id
+
+7. Query for Students with Grade "B"
+Retrieve Names and Ages of Students with Grade "B"
+SELECT Stu_name, AGE(Date_of_birth) AS Age
+FROM student_table
+WHERE Grade = 'B';
+
+8. Grouping and Calculation
+Group by Department and Gender and Calculate Average GPA
+SELECT Department, Gender, AVG(GPA) AS Average_GPA
+FROM student_table
+GROUP BY Department, Gender;
+
+9. Table Renaming
+Rename the student_table to student_info
+ALTER TABLE student_table RENAME TO student_info;
+
+10. Retrieve Student with Highest GPA
+Retrieve the Name of the Student with the Highest GPA
+SELECT Stu_name
+FROM student_info
+ORDER BY GPA DESC
+LIMIT 1;
+
