@@ -1,0 +1,65 @@
+1. Database Creation
+a) Create the Database
+CREATE DATABASE sales_analysis;
+
+b) Create the sales_sample Table
+CREATE TABLE sales_sample (
+    Product_Id INT,
+    Region VARCHAR(50),
+    Date DATE,
+    Sales_Amount NUMERIC
+);
+
+
+2. Data Creation
+Insert Sample Data into the sales_sample Table
+INSERT INTO sales_sample (Product_Id, Region, Date, Sales_Amount)
+VALUES
+(1, 'East', '2024-01-10', 1000),
+(2, 'West', '2024-01-15', 1500),
+(3, 'North', '2024-02-10', 1200),
+(1, 'South', '2024-02-20', 1300),
+(2, 'East', '2024-03-05', 1400),
+(3, 'West', '2024-03-15', 1100),
+(1, 'North', '2024-04-10', 1600),
+(2, 'South', '2024-04-20', 1700),
+(3, 'East', '2024-05-05', 1800),
+(1, 'West', '2024-05-15', 1900);
+
+3. Perform OLAP Operations
+a) Drill Down: Analyze Sales Data at a More Detailed Level
+This query drills down from the region level to the product level to understand sales performance.
+SELECT Region, Product_Id, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY Region, Product_Id
+ORDER BY Region, Product_Id;
+
+b) Rollup: Summarize Sales Data at Different Levels of Granularity
+This query performs a rollup to view total sales by region, summarizing from the product level.
+SELECT Region, COALESCE(Product_Id, 'All Products') AS Product, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY ROLLUP (Region, Product_Id)
+ORDER BY Region, Product;
+
+c) Cube: Analyze Sales Data from Multiple Dimensions Simultaneously
+This query uses the CUBE operation to explore sales data from different perspectives, such as product, region, and date.
+SELECT COALESCE(Product_Id, 'All Products') AS Product,
+       COALESCE(Region, 'All Regions') AS Region,
+       COALESCE(Date, 'All Dates') AS Date,
+       SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY CUBE (Product_Id, Region, Date)
+ORDER BY Product, Region, Date;
+
+d) Slice: Extract a Subset of Data Based on Specific Criteria
+This query slices the data to view sales for a particular region (e.g., 'East') or a specific date range.
+SELECT *
+FROM sales_sample
+WHERE Region = 'East' AND Date BETWEEN '2024-01-01' AND '2024-03-31';
+
+e) Dice: Extract Data Based on Multiple Criteria
+This query dices the data to view sales for specific combinations of product, region, and date.
+SELECT *
+FROM sales_sample
+WHERE Product_Id = 1 AND Region = 'East' AND Date BETWEEN '2024-01-01' AND '2024-05-31';
+
